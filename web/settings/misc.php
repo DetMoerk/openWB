@@ -28,35 +28,13 @@
 		<link rel="stylesheet" type="text/css" href="css/normalize-8.0.1.css">
 		<link rel="stylesheet" type="text/css" href="fonts/font-awesome-5.8.2/css/all.css">
 		<!-- include settings-style -->
-		<link rel="stylesheet" type="text/css" href="settings/settings_style.css">
+		<link rel="stylesheet" type="text/css" href="css/settings_style.css">
 
 		<!-- important scripts to be loaded -->
 		<script src="js/jquery-3.4.1.min.js"></script>
 		<script src="js/bootstrap-4.4.1/bootstrap.bundle.min.js"></script>
 		<!-- load helper functions -->
-		<script src = "settings/helperFunctions.js?ver=20201231" ></script>
-		<script>
-			function getCookie(cname) {
-				var name = cname + '=';
-				var decodedCookie = decodeURIComponent(document.cookie);
-				var ca = decodedCookie.split(';');
-				for(var i = 0; i <ca.length; i++) {
-					var c = ca[i];
-					while (c.charAt(0) == ' ') {
-						c = c.substring(1);
-					}
-					if (c.indexOf(name) == 0) {
-						return c.substring(name.length, c.length);
-					}
-				}
-				return '';
-			}
-			var themeCookie = getCookie('openWBTheme');
-			// include special Theme style
-			if( '' != themeCookie ){
-				$('head').append('<link rel="stylesheet" href="themes/' + themeCookie + '/settings.css?v=20200801">');
-			}
-		</script>
+		<script src = "settings/helperFunctions.js?ver=20210329" ></script>
 	</head>
 
 	<body>
@@ -75,7 +53,7 @@
 
 		<div role="main" class="container" style="margin-top:20px">
 			<h1>Verschiedene Einstellungen</h1>
-			<form action="./tools/saveconfig.php" method="POST">
+			<form action="./settings/saveconfig.php" method="POST">
 
 				<!-- Allgemeine Funktionen -->
 				<div class="card border-secondary">
@@ -171,7 +149,7 @@
 										Sobald die Frequenz wieder in einem normalen Bereich ist wird automatisch der zuletzt gewählte Lademodus wieder aktiviert.
 										Ebenso wird die Ladung bei Überschreiten von 51,8 Hz unterbrochen. Dies ist dann der Fall, wenn der Energieversorger Wartungsarbeiten am (Teil-)Netz durchführt und auf einen vorübergehenden Generatorbetrieb umschaltet.
 										Die Erhöhung der Frequenz wird durchgeführt, um die PV Anlagen abzuschalten.<br>
-										<span class="text-danger">Die Option ist nur aktiv, wenn der Ladepunkt die Frequenz übermittelt. Jede openWB series1/2 tut dies.</span>
+										<span class="text-danger">Die Option ist nur aktiv, wenn der Ladepunkt die Frequenz übermittelt. Jede openWB Series1/2 unterstützt dies.</span>
 									</span>
 								</div>
 							</div>
@@ -199,17 +177,49 @@
 									</label>
 								</div>
 							</div>
-							<div class="form-row mt-2 hide" id="lp2cpdiv">
-								<div class="col-md-4">
-									<label class="col-form-label">Ladepunkt 2</label>
+							<div class="form-row mb-1 lp1cpon hide">
+								<label for="cpunterbrechungdauerlp1" class="col-md-4 col-form-label">Dauer der Unterbrechung</label>
+								<div class="col-md-8">
+									<div class="form-row vaRow mb-1">
+										<label for="cpunterbrechungdauerlp1" class="col-2 col-form-label valueLabel" suffix="Sek"><?php echo $cpunterbrechungdauerlp1old; ?> Sek</label>
+										<div class="col-10">
+											<input type="range" class="form-control-range rangeInput" name="cpunterbrechungdauerlp1" id="cpunterbrechungdauerlp1" min="4" max="15" step="1" value="<?php echo $cpunterbrechungdauerlp1old; ?>">
+										</div>
+									</div>
+									<span class="form-text small">
+										Die Standardeinstellung ist 4 Sekunden. Falls ein Fahrzeug den Ladevorgang nicht zuverlässig startet, kann dieser Wert erhöht werden.
+										<span class="text-danger">Achtung: experimentelle Einstellung!</span>
+									</span>
 								</div>
-								<div class="btn-group btn-group-toggle col" data-toggle="buttons">
-									<label class="btn btn-outline-info<?php if($cpunterbrechunglp2old == 0) echo " active" ?>">
-										<input type="radio" name="cpunterbrechunglp2" id="cpunterbrechunglp2Off" value="0"<?php if($cpunterbrechunglp2old == 0) echo " checked=\"checked\"" ?>>Aus
-									</label>
-									<label class="btn btn-outline-info<?php if($cpunterbrechunglp2old == 1) echo " active" ?>">
-										<input type="radio" name="cpunterbrechunglp2" id="cpunterbrechunglp2On" value="1"<?php if($cpunterbrechunglp2old == 1) echo " checked=\"checked\"" ?>>An
-									</label>
+							</div>
+							<div id="lp2cpdiv" class="hide">
+								<div class="form-row mt-2">
+									<div class="col-md-4">
+										<label class="col-form-label">Ladepunkt 2</label>
+									</div>
+									<div class="btn-group btn-group-toggle col" data-toggle="buttons">
+										<label class="btn btn-outline-info<?php if($cpunterbrechunglp2old == 0) echo " active" ?>">
+											<input type="radio" name="cpunterbrechunglp2" id="cpunterbrechunglp2Off" value="0"<?php if($cpunterbrechunglp2old == 0) echo " checked=\"checked\"" ?>>Aus
+										</label>
+										<label class="btn btn-outline-info<?php if($cpunterbrechunglp2old == 1) echo " active" ?>">
+											<input type="radio" name="cpunterbrechunglp2" id="cpunterbrechunglp2On" value="1"<?php if($cpunterbrechunglp2old == 1) echo " checked=\"checked\"" ?>>An
+										</label>
+									</div>
+								</div>
+								<div class="form-row mb-1 lp2cpon hide">
+									<label for="cpunterbrechungdauerlp2" class="col-md-4 col-form-label">Dauer der Unterbrechung</label>
+									<div class="col-md-8">
+										<div class="form-row vaRow mb-1">
+											<label for="cpunterbrechungdauerlp2" class="col-2 col-form-label valueLabel" suffix="Sek"><?php echo $cpunterbrechungdauerlp2old; ?> Sek</label>
+											<div class="col-10">
+												<input type="range" class="form-control-range rangeInput" name="cpunterbrechungdauerlp2" id="cpunterbrechungdauerlp2" min="4" max="15" step="1" value="<?php echo $cpunterbrechungdauerlp2old; ?>">
+											</div>
+										</div>
+										<span class="form-text small">
+											Die Standardeinstellung ist 4 Sekunden. Falls ein Fahrzeug den Ladevorgang nicht zuverlässig startet, kann dieser Wert erhöht werden.
+										<span class="text-danger">Achtung: experimentelle Einstellung!</span>
+									</span>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -217,12 +227,39 @@
 					<script>
 						var lp2akt = <?php echo $lastmanagementold ?>;
 
+						function visibility_lp1cp() {
+							if($('#cpunterbrechunglp1Off').prop("checked")) {
+								hideSection('.lp1cpon');
+							} else {
+								showSection('.lp1cpon', false);
+							}
+						}
+
+						function visibility_lp2cp() {
+							if($('#cpunterbrechunglp2Off').prop("checked")) {
+								hideSection('.lp2cpon');
+							} else {
+								showSection('.lp2cpon', false);
+							}
+						}
+
 						$(document).ready(function(){
 							if(lp2akt == '0') {
 								hideSection('#lp2cpdiv');
 							} else {
 								showSection('#lp2cpdiv');
 							}
+
+							$('input[type=radio][name=cpunterbrechunglp1]').change(function(){
+								visibility_lp1cp();
+							});
+
+							$('input[type=radio][name=cpunterbrechunglp2]').change(function(){
+								visibility_lp2cp();
+							});
+
+							visibility_lp1cp();
+							visibility_lp2cp();
 						});
 					</script>
 				</div>
