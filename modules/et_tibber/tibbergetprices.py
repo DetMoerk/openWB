@@ -262,7 +262,7 @@ def _get_updated_pricelist():
             # konvertiere Time-String (Format 2021-02-06T00:00:00+01:00) in Datetime-Object
             # entferne ':' in Timezone, da nicht von strptime unterstützt
             time_str = ''.join(price_data['startsAt'].rsplit(':', 1))
-            startzeit_localized = datetime.strptime(time_str, '%Y-%m-%dT%H:%M:%S%z')
+            startzeit_localized = datetime.strptime(time_str, '%Y-%m-%dT%H:%M:%S.%f%z')
             # und konvertiere nach UTC
             starttime_utc = startzeit_localized.astimezone(timezone.utc)
             #Preisliste beginnt immer mit aktueller Stunde
@@ -394,6 +394,7 @@ def update_pricedata(tibber_token, home_id, debug_level):
                     # weniger als 11 Stunden in bisheriger Liste: versuche, die Liste neu abzufragen
                     # dementsprechend auch bei vorherigem Fehler: 9 Einträge zu 99.99ct/kWh
                     _write_log_entry('Versuche, weitere Preise von Tibber zu empfangen', 1)
+                    pricelist_received = []
                     try:
                         pricelist_received = _get_updated_pricelist()
                     except Exception as e:
