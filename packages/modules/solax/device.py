@@ -16,8 +16,7 @@ def get_default_config() -> dict:
         "name": "Solax",
         "type": "solax",
         "id": 0,
-        "configuration":
-        {
+        "configuration": {
             "ip_address": "192.168.193.15"
         }
     }
@@ -63,7 +62,7 @@ class Device(AbstractDevice):
                 ": Es konnten keine Werte gelesen werden, da noch keine Komponenten konfiguriert wurden.")
 
 
-def read_legacy(component_type: str, ip_address: str, num: Optional[int]) -> None:
+def read_legacy(component_type: str, ip_address: str, num: Optional[int] = None) -> None:
     COMPONENT_TYPE_TO_MODULE = {
         "bat": bat,
         "counter": counter,

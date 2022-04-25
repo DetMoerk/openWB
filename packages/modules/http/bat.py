@@ -11,12 +11,11 @@ def get_default_config() -> dict:
         "name": "HTTP Speicher",
         "id": 0,
         "type": "bat",
-        "configuration":
-        {
-            "power_path": "/power.txt",
-            "imported_path": "/imported.txt",
-            "exported_path": "/exported.txt",
-            "soc_path": "/soc.txt"
+        "configuration": {
+            "power_path": "",
+            "imported_path": "none",
+            "exported_path": "none",
+            "soc_path": ""
         }
     }
 
